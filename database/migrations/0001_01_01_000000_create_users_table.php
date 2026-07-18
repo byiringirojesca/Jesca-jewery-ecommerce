@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // Elite tier control columns for access levels and account tracking
+            $table->string('role')->default('customer'); // Supported values: 'admin', 'customer'
+            $table->string('status')->default('active'); // Supported values: 'active', 'suspended', 'inactive'
+
             $table->rememberToken();
             $table->timestamps();
         });

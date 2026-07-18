@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained();
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name');
+            $table->string('slug')->unique(); // Added for clean URLs (e.g., /products/toyota-land-cruiser-2026)
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->integer('stock');
