@@ -7,63 +7,91 @@
 @extends('layouts.client')
 
 @section('content')
-    <div class="max-w-2xl mx-auto my-12 text-center">
-        <!-- Success Status Icon Animation Container -->
-        <div
-            class="inline-flex items-center justify-center h-20 w-20 rounded-full bg-green-50 text-green-600 mb-6 shadow-sm border border-green-100">
-            <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
+    <style>
+        .gold-shimmer-text {
+            background: linear-gradient(90deg, #0d0d0d 0%, #a67c1e 50%, #0d0d0d 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+    </style>
+
+    <div class="w-full max-w-[1200px] mx-auto bg-luxury-white pb-32 pt-12 text-center px-4 lg:px-0">
+
+        <div class="mb-12 flex justify-center">
+            <div class="h-16 w-16 flex items-center justify-center border border-luxury-gold/40 relative">
+                <span
+                    class="absolute text-[8px] font-mono tracking-widest text-luxury-gold top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-luxury-white px-2">SUCCESS</span>
+                <svg class="h-5 w-5 text-luxury-gold stroke-[1.25]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="square" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
         </div>
 
-        <!-- Main Message Grid Header -->
-        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight mb-2">Thank You for Your Purchase!</h1>
-        <p class="text-base text-gray-600 max-w-md mx-auto mb-8">Your order has been placed successfully and is currently
-            being processed by our logistics fulfillment center.</p>
+        <span class="text-[10px] uppercase tracking-[0.5em] text-luxury-gold font-semibold block mb-4">// Order
+            Confirmed</span>
+        <h1
+            class="text-4xl lg:text-6xl font-serif font-light tracking-tight text-luxury-black max-w-2xl mx-auto leading-tight mb-6">
+            Your order is placed. <br><span class="italic font-normal gold-shimmer-text">Thank you.</span>
+        </h1>
 
-        <!-- Detailed Invoice Specifications Summary Card -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-left mb-8 divide-y divide-gray-100">
-            <div class="pb-4 grid grid-cols-2 gap-4 text-sm">
-                <div>
-                    <span class="text-gray-500 block uppercase tracking-wider text-xs font-semibold">Order Registry
-                        Reference</span>
-                    <span class="font-mono font-bold text-gray-900 mt-0.5 block">{{ $transactionId }}</span>
-                </div>
-                <div>
-                    <span class="text-gray-500 block uppercase tracking-wider text-xs font-semibold">Payment
-                        Architecture</span>
-                    <span class="font-medium text-gray-900 mt-0.5 block">Cash on Delivery / Mock Wallet</span>
-                </div>
-            </div>
+        <p class="text-xs font-light text-luxury-charcoal/70 max-w-md mx-auto leading-relaxed tracking-wider mb-24">
+            We have received your payment confirmation. Our delivery team is now preparing your items and getting them ready
+            for shipping.
+        </p>
 
-            <div class="pt-4 pb-4 grid grid-cols-2 gap-4 text-sm">
-                <div>
-                    <span class="text-gray-500 block uppercase tracking-wider text-xs font-semibold">Target Shipping
+        <div class="border-t border-b border-luxury-champagne py-14 text-left mb-24 max-w-3xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+
+                <div class="flex flex-col border-b border-luxury-champagne/40 pb-4 md:border-b-0 md:pb-0">
+                    <span class="text-[9px] uppercase tracking-[0.3em] text-luxury-gold font-medium mb-2">01 // Order
+                        Number</span>
+                    <span
+                        class="font-mono text-sm tracking-widest font-medium text-luxury-black uppercase">{{ $transactionId }}</span>
+                </div>
+
+                <div class="flex flex-col border-b border-luxury-champagne/40 pb-4 md:border-b-0 md:pb-0">
+                    <span class="text-[9px] uppercase tracking-[0.3em] text-luxury-gold font-medium mb-2">02 // Payment
+                        Method</span>
+                    <span class="text-xs uppercase tracking-widest font-light text-luxury-black">Cash on Delivery</span>
+                </div>
+
+                <div class="flex flex-col border-b border-luxury-champagne/40 pb-4 md:border-b-0 md:pb-0">
+                    <span class="text-[9px] uppercase tracking-[0.3em] text-luxury-gold font-medium mb-2">03 // Shipping
                         Address</span>
-                    <span class="text-gray-700 mt-0.5 block">Kigali, Rwanda</span>
+                    <span class="text-xs uppercase tracking-widest font-light text-luxury-black">Kigali, Rwanda</span>
                 </div>
-                <div>
-                    <span class="text-gray-500 block uppercase tracking-wider text-xs font-semibold">Estimated Delivery
-                        Window</span>
-                    <span class="text-amber-600 font-bold mt-0.5 block">{{ $estimatedDelivery }}</span>
+
+                <div class="flex flex-col">
+                    <span class="text-[9px] uppercase tracking-[0.3em] text-luxury-gold font-medium mb-2">04 // Expected
+                        Delivery</span>
+                    <span
+                        class="font-serif text-sm tracking-wide text-luxury-gold font-medium">{{ $estimatedDelivery }}</span>
                 </div>
+
             </div>
 
-            <div class="pt-4 text-center text-xs text-gray-400">
-                A copy of this digital invoice snapshot has been registered down into your system profile database schema.
+            <div class="mt-16 text-center border-t border-luxury-champagne/30 pt-8">
+                <p class="text-[9px] uppercase tracking-[0.2em] text-luxury-charcoal/40 leading-relaxed max-w-md mx-auto">
+                    A record of this purchase has been successfully saved to your account profile history.
+                </p>
             </div>
         </div>
 
-        <!-- Quick Navigation Call to Actions -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-6 max-w-lg mx-auto">
             <a href="{{ route('products.index') }}"
-                class="w-full sm:w-auto bg-amber-600 text-white font-medium py-3 px-6 rounded-md hover:bg-amber-700 transition duration-150 shadow-sm text-sm">
-                Continue Shopping
+                class="w-full text-center group relative border border-luxury-black text-luxury-black hover:text-luxury-white font-sans text-xs uppercase tracking-[0.4em] font-semibold py-4 px-6 transition-colors duration-500 overflow-hidden block">
+                <span
+                    class="absolute inset-0 w-full h-full bg-luxury-black transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) -z-10"></span>
+                <span class="relative z-10">Continue Shopping</span>
             </a>
+
             <a href="{{ route('home') }}"
-                class="w-full sm:w-auto bg-gray-100 text-gray-700 font-medium py-3 px-6 rounded-md hover:bg-gray-200 transition duration-150 text-sm">
-                Return to Homepage
+                class="w-full text-center group border border-luxury-black/20 text-luxury-charcoal hover:border-luxury-black font-sans text-xs uppercase tracking-[0.4em] font-medium py-4 px-6 transition-colors duration-500 block">
+                <span>Return to Homepage</span>
             </a>
         </div>
+
     </div>
 @endsection

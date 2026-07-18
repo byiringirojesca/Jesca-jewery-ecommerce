@@ -26,117 +26,165 @@
 @extends('layouts.client')
 
 @section('content')
-    <div class="max-w-7xl mx-auto">
-        <h1 class="text-3xl font-bold text-gray-900 mb-8">Checkout Secure Processing</h1>
+    <style>
+        .luxury-row-input:focus {
+            border-bottom-color: #D4AF37;
+            box-shadow: none;
+        }
+    </style>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <!-- Left Side: Shipping and Order Information Collection Form -->
-            <div class="lg:col-span-7 bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-900 mb-6">Customer & Shipping Details</h2>
+    <div class="w-full max-w-[1700px] mx-auto bg-luxury-white pb-32 pt-6">
 
-                <form action="#" method="POST" class="space-y-6">
+        <header class="border-b border-luxury-champagne pb-8 mb-16 px-4 lg:px-0">
+            <span class="text-[10px] uppercase tracking-[0.5em] text-luxury-gold font-semibold block mb-3">//
+                Checkout</span>
+            <h1 class="text-4xl lg:text-5xl font-serif font-light tracking-tight text-luxury-black">
+                Secure Checkout
+            </h1>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start px-4 lg:px-0">
+
+            <div class="lg:col-span-7 flex flex-col">
+                <header class="mb-10">
+                    <h2
+                        class="text-xs uppercase tracking-[0.3em] font-medium text-luxury-black border-b border-luxury-champagne/40 pb-3">
+                        01 // Personal Information
+                    </h2>
+                </header>
+
+                <form action="#" method="POST" class="space-y-12">
                     @csrf
 
-                    <!-- Contact Info Section -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
-                            <input type="text" name="first_name" required
-                                class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
+                        <div class="relative w-full">
+                            <label
+                                class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">First
+                                Name *</label>
+                            <input type="text" name="first_name" required autocomplete="given-name"
+                                class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs uppercase tracking-widest text-luxury-black focus:outline-none luxury-row-input transition-colors duration-500 pt-2">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
-                            <input type="text" name="last_name" required
-                                class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                        <div class="relative w-full">
+                            <label
+                                class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Last
+                                Name *</label>
+                            <input type="text" name="last_name" required autocomplete="family-name"
+                                class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs uppercase tracking-widest text-luxury-black focus:outline-none luxury-row-input transition-colors duration-500 pt-2">
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
+                        <div class="relative w-full">
+                            <label
+                                class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Email
+                                Address *</label>
                             <input type="email" name="email" value="{{ Auth::user() ? Auth::user()->email : '' }}" required
-                                class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                                autocomplete="email"
+                                class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs uppercase tracking-widest text-luxury-black focus:outline-none luxury-row-input transition-colors duration-500 pt-2">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                            <input type="tel" name="phone" placeholder="e.g., 078XXXXXXX" required
-                                class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                        <div class="relative w-full">
+                            <label
+                                class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Phone
+                                Number *</label>
+                            <input type="tel" name="phone" placeholder="e.g., 078XXXXXXX" required autocomplete="tel"
+                                class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs tracking-widest text-luxury-black placeholder-luxury-charcoal/30 focus:outline-none luxury-row-input transition-colors duration-500 pt-2">
                         </div>
                     </div>
 
-                    <!-- Destination Location Details -->
-                    <hr class="border-gray-100 my-4">
-                    <h3 class="text-md font-bold text-gray-900 mb-3">Delivery Destination</h3>
+                    <div class="pt-6">
+                        <h3
+                            class="text-xs uppercase tracking-[0.3em] font-medium text-luxury-black border-b border-luxury-champagne/40 pb-3">
+                            02 // Shipping Address
+                        </h3>
+                    </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Street Address / Neighborhood *</label>
-                        <input type="text" name="address" placeholder="House number, street info, or specific landmarks"
+                    <div class="relative w-full">
+                        <label
+                            class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Street
+                            Address *</label>
+                        <input type="text" name="address" placeholder="House number, street name, apartment, or suite"
                             required
-                            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                            class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs uppercase tracking-widest text-luxury-black placeholder-luxury-charcoal/30 focus:outline-none luxury-row-input transition-colors duration-500 pt-2">
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">City / Province *</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
+                        <div class="relative w-full">
+                            <label
+                                class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">City
+                                / Province *</label>
                             <input type="text" name="city" placeholder="Kigali" required
-                                class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+                                class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs uppercase tracking-widest text-luxury-black placeholder-luxury-charcoal/30 focus:outline-none luxury-row-input transition-colors duration-500 pt-2">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Country *</label>
+                        <div class="relative w-full">
+                            <label
+                                class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Country</label>
                             <input type="text" name="country" value="Rwanda" readonly
-                                class="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-500 outline-none">
+                                class="w-full bg-transparent border-b border-luxury-black/10 pb-2 text-xs uppercase tracking-widest text-luxury-charcoal/60 outline-none cursor-default pt-2">
                         </div>
                     </div>
 
-                    <!-- Complete Checkout Trigger button -->
-                    <div class="pt-4">
+                    <div class="pt-8">
                         <button type="button"
                             onclick="window.location.href='{{ route('checkout.confirmation', ['id' => 'TXN-' . rand(10000, 99999)]) }}'"
-                            class="w-full bg-amber-600 text-white font-semibold py-3 px-6 rounded-md hover:bg-amber-700 transition duration-150 text-center block shadow-sm">
-                            Confirm & Place Order ($\${{ number_format($totalPrice, 2) }}$)
+                            class="w-full group relative border border-luxury-black text-luxury-black hover:text-luxury-white font-sans text-xs uppercase tracking-[0.4em] font-semibold py-4 px-8 transition-colors duration-500 overflow-hidden bg-transparent">
+                            <span
+                                class="absolute inset-0 w-full h-full bg-luxury-black transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) -z-10"></span>
+                            <span class="relative z-10">Place Order // ${{ number_format($totalPrice, 2) }}</span>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Right Side: Order Summary Review Window Module -->
-            <div class="lg:col-span-5">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 sticky top-24">
-                    <h2 class="text-xl font-bold text-gray-900 mb-6">Order Summary Review</h2>
+            <div class="lg:col-span-5 lg:sticky lg:top-32 w-full">
+                <div class="border border-luxury-champagne p-8 lg:p-10 bg-transparent relative">
+                    <h2 class="text-xs uppercase tracking-[0.4em] text-luxury-gold font-semibold mb-6">// Order Summary</h2>
 
-                    <!-- Item Stack List -->
-                    <div class="divide-y divide-gray-100 max-h-64 overflow-y-auto pr-2 mb-6">
+                    <div class="divide-y divide-luxury-champagne/60 max-h-72 overflow-y-auto pr-2 mb-8 luxury-scrollbar">
                         @foreach($cartItems as $item)
-                            <div class="py-3 flex items-center justify-between gap-4">
-                                <div>
-                                    <h4 class="font-medium text-gray-900 text-sm">{{ $item['name'] }}</h4>
-                                    <span class="text-xs text-gray-500">{{ $item['category'] }} &times;
-                                        {{ $item['quantity'] }}</span>
+                            <div class="py-4 flex items-center justify-between gap-6 first:pt-0 last:pb-0">
+                                <div class="flex flex-col">
+                                    <h4 class="font-serif font-light text-luxury-black text-sm tracking-wide mb-1">
+                                        {{ $item['name'] }}
+                                    </h4>
+                                    <span class="text-[9px] uppercase tracking-[0.2em] text-luxury-charcoal/50">
+                                        {{ $item['category'] }} <span
+                                            class="text-luxury-gold font-sans font-medium">x{{ $item['quantity'] }}</span>
+                                    </span>
                                 </div>
-                                <span
-                                    class="text-sm font-semibold text-gray-900">${{ number_format($item['price'] * $item['quantity'], 2) }}</span>
+                                <span class="text-xs font-mono font-medium text-luxury-black tracking-wider">
+                                    ${{ number_format($item['price'] * $item['quantity'], 2) }}
+                                </span>
                             </div>
                         @endforeach
                     </div>
 
-                    <!-- Final Calculations Grid Stack -->
-                    <div class="border-t border-gray-100 pt-4 space-y-3 text-sm text-gray-600">
+                    <div
+                        class="border-t border-luxury-champagne pt-4 space-y-4 text-xs font-light tracking-wider text-luxury-charcoal">
                         <div class="flex justify-between">
                             <span>Subtotal</span>
-                            <span class="font-medium text-gray-900">${{ number_format($subtotal, 2) }}</span>
+                            <span class="font-medium text-luxury-black">${{ number_format($subtotal, 2) }}</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span>Standard Delivery</span>
-                            <span class="font-medium text-gray-900">${{ number_format($deliveryFee, 2) }}</span>
+                        <div class="flex justify-between pb-2">
+                            <span>Delivery Fee</span>
+                            <span class="font-medium text-luxury-black">${{ number_format($deliveryFee, 2) }}</span>
                         </div>
                         <div
-                            class="border-t border-gray-100 pt-3 flex justify-between text-base font-extrabold text-gray-900">
-                            <span>Total Due</span>
-                            <span class="text-amber-600">${{ number_format($totalPrice, 2) }}</span>
+                            class="border-t border-luxury-champagne pt-4 flex justify-between items-baseline text-luxury-black">
+                            <span class="text-[10px] uppercase tracking-[0.3em] font-medium">Total Price</span>
+                            <span class="text-2xl font-serif font-light text-luxury-gold tracking-tight">
+                                ${{ number_format($totalPrice, 2) }}
+                            </span>
                         </div>
                     </div>
                 </div>
+
+                <div class="mt-6 text-center">
+                    <span class="text-[9px] uppercase tracking-[0.2em] text-luxury-charcoal/40 block">
+                        Secured with SSL Encryption
+                    </span>
+                </div>
             </div>
+
         </div>
     </div>
 @endsection

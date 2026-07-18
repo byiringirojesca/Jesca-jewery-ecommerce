@@ -3,7 +3,63 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Custom Luxury Palette (Generates text-luxury-gold, bg-luxury-champagne, etc.) */
+    --color-luxury-white: #FAF8F5;
+    --color-luxury-champagne: #F3EFE9;
+    --color-luxury-gold: #D4AF37;
+    --color-luxury-bronze: #A67C1E;
+    --color-luxury-charcoal: #1A1A1A;
+    --color-luxury-black: #0D0D0D;
+
+    /* Font Family Mappings */
+    --font-serif: "Cormorant Garamond", serif;
+    --font-sans: "Satoshi", sans-serif;
+
+    /* Custom Animations */
+    --animate-shimmer: shimmer 3s infinite linear;
+    --animate-fade-in-up: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    /* Animation Keyframes */
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(40px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+}
+
+/* Base Style Overrides */
+@layer base {
+    body {
+        background-color: var(--color-luxury-white);
+        color: var(--color-luxury-black);
+        overflow-x: hidden;
+    }
+
+    /* Custom dynamic scrollbar */
+    ::-webkit-scrollbar { 
+        width: 5px; 
+        height: 5px; 
+    }
+    ::-webkit-scrollbar-track { 
+        background: var(--color-luxury-white); 
+    }
+    ::-webkit-scrollbar-thumb { 
+        background: var(--color-luxury-gold); 
+    }
+}
+
+/* Utility Components */
+@layer utilities {
+    .gold-shimmer {
+        background: linear-gradient(90deg, #0d0d0d 0%, #a67c1e 50%, #0d0d0d 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 4s linear infinite;
+    }
 }

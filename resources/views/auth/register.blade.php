@@ -1,45 +1,119 @@
 @extends('layouts.client')
 
 @section('content')
-    <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-100 my-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Create an Account</h2>
+    <style>
+        .luxury-input:focus {
+            border-bottom-color: #D4AF37;
+            box-shadow: none;
+        }
 
-        @if ($errors->any())
-            <div class="bg-red-50 text-red-600 p-3 rounded-md mb-4 text-sm">
-                <ul class="list-disc pl-4">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #0D0D0D 0%, #A67C1E 50%, #0D0D0D 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
 
-        <form action="{{ route('register') }}" method="POST" class="space-y-4">
-            @csrf
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <input type="text" name="name" value="{{ old('name') }}" required
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+    <div class="w-full max-w-[1700px] mx-auto min-h-[85vh] bg-luxury-white flex items-center justify-center py-20">
+        <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center px-4 lg:px-0">
+
+            <div
+                class="hidden lg:flex lg:col-span-6 flex-col justify-center text-left pr-16 border-r border-luxury-champagne/60 min-h-[450px]">
+                <span class="text-[10px] uppercase tracking-[0.6em] text-luxury-gold mb-6 font-semibold block">
+                    Jesca Jewelry & Apparel
+                </span>
+                <h2 class="text-4xl xl:text-5xl font-serif font-light text-luxury-black leading-[1.15] tracking-tight mb-6">
+                    Establish Your Private <br>Client <span
+                        class="italic font-normal gold-gradient-text">Credentials.</span>
+                </h2>
+                <p class="text-xs font-light text-luxury-charcoal/60 leading-relaxed max-w-sm tracking-wide mb-4">
+                    Initiate exclusive entry to the Jesca ecosystem. Becoming a registered patron unlocks prioritized
+                    seasonal collections, private structural commissions, and bespoke order allocation capabilities.
+                </p>
+                <div class="mt-8 pt-6 border-t border-luxury-champagne/40">
+                    <span class="text-[9px] uppercase tracking-[0.2em] text-luxury-gold block mb-2">[ Member Prerogatives
+                        ]</span>
+                    <ul class="space-y-1 text-[11px] font-light text-luxury-charcoal/70 tracking-wider">
+                        <li>• Curated Runway Presales</li>
+                        <li>• Direct Atelier Communication Matrix</li>
+                        <li>• Global Priority Vault Shipping</li>
+                    </ul>
+                </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <input type="email" name="email" value="{{ old('email') }}" required
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
+
+            <div class="w-full lg:col-span-5 lg:col-start-8 flex flex-col justify-center">
+                <header class="mb-12">
+                    <span class="text-[10px] uppercase tracking-[0.4em] text-luxury-gold mb-2 block font-medium">//
+                        Credentials Registry</span>
+                    <h1 class="text-3xl font-serif font-light tracking-tight text-luxury-black">Create Client Profile</h1>
+                </header>
+
+                @if ($errors->any())
+                    <div
+                        class="border-l border-red-600 bg-red-50/40 p-4 mb-8 text-[10px] tracking-widest uppercase font-medium text-red-700">
+                        <ul class="space-y-1 list-none pl-0">
+                            @foreach ($errors->all() as $error)
+                                <li>Error // {{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('register') }}" method="POST" class="space-y-10">
+                    @csrf
+
+                    <div class="relative w-full">
+                        <label
+                            class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Full
+                            Name</label>
+                        <input type="text" name="name" value="{{ old('name') }}" required autofocus
+                            class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs uppercase tracking-widest text-luxury-black placeholder-luxury-charcoal/30 focus:outline-none luxury-input transition-colors duration-500 pt-2">
+                    </div>
+
+                    <div class="relative w-full">
+                        <label
+                            class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Email
+                            Address</label>
+                        <input type="email" name="email" value="{{ old('email') }}" required
+                            class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs uppercase tracking-widest text-luxury-black placeholder-luxury-charcoal/30 focus:outline-none luxury-input transition-colors duration-500 pt-2">
+                    </div>
+
+                    <div class="relative w-full">
+                        <label
+                            class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Secret
+                            Password</label>
+                        <input type="password" name="password" required
+                            class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs tracking-widest text-luxury-black placeholder-luxury-charcoal/30 focus:outline-none luxury-input transition-colors duration-500 pt-2">
+                    </div>
+
+                    <div class="relative w-full">
+                        <label
+                            class="absolute -top-5 left-0 text-[9px] uppercase tracking-[0.3em] text-luxury-charcoal/50 font-medium">Confirm
+                            Password Verification</label>
+                        <input type="password" name="password_confirmation" required
+                            class="w-full bg-transparent border-t-0 border-x-0 border-b border-luxury-black/20 pb-2 text-xs tracking-widest text-luxury-black placeholder-luxury-charcoal/30 focus:outline-none luxury-input transition-colors duration-500 pt-2">
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit"
+                            class="w-full group relative border border-luxury-black text-luxury-black hover:text-luxury-white font-sans text-xs uppercase tracking-[0.4em] font-semibold py-4 px-8 transition-colors duration-500 overflow-hidden bg-transparent">
+                            <span
+                                class="absolute inset-0 w-full h-full bg-luxury-black transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) -z-10"></span>
+                            <span class="relative z-10">Register Credentials</span>
+                        </button>
+                    </div>
+                </form>
+
+                <footer
+                    class="mt-14 border-t border-luxury-champagne/40 pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-[10px] uppercase tracking-[0.25em]">
+                    <span class="text-luxury-charcoal/50">Already Have an Account?</span>
+                    <a href="{{ route('login') }}"
+                        class="text-luxury-gold hover:text-luxury-black transition-colors font-semibold relative pb-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-luxury-gold/30 hover:after:bg-luxury-black">
+                        Client Login &rarr;
+                    </a>
+                </footer>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                <input type="password" name="password" required
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                <input type="password" name="password_confirmation" required
-                    class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-amber-500">
-            </div>
-            <button type="submit"
-                class="w-full bg-amber-600 text-white font-medium py-2 rounded-md hover:bg-amber-700 transition">Register</button>
-        </form>
-        <p class="mt-4 text-sm text-gray-600 text-center">Already have an account? <a href="{{ route('login') }}"
-                class="text-amber-600 hover:underline">Login here</a></p>
+
+        </div>
     </div>
 @endsection

@@ -1,85 +1,160 @@
 @php
     // Quick admin dashboard analytics mock data layer
     $stats = [
-        ['label' => 'Total Revenue', 'value' => '$4,295.00', 'color' => 'text-green-600', 'bg' => 'bg-green-50'],
-        ['label' => 'Active Orders', 'value' => '12 Pending', 'color' => 'text-blue-600', 'bg' => 'bg-blue-50'],
-        ['label' => 'Total Products', 'value' => '84 Items', 'color' => 'text-amber-600', 'bg' => 'bg-amber-50'],
-        ['label' => 'Registered Users', 'value' => '142 Clients', 'color' => 'text-purple-600', 'bg' => 'bg-purple-50']
+        ['label' => 'Total Revenue', 'value' => '$4,295.00', 'color' => 'text-emerald-700', 'bg' => 'bg-emerald-50/40'],
+        ['label' => 'Active Orders', 'value' => '12 Pending', 'color' => 'text-amber-700', 'bg' => 'bg-amber-50/40'],
+        ['label' => 'Total Products', 'value' => '84 Items', 'color' => 'text-stone-700', 'bg' => 'bg-stone-100/50'],
+        ['label' => 'Registered Users', 'value' => '142 Clients', 'color' => 'text-neutral-800', 'bg' => 'bg-neutral-100/50']
     ];
 
     $recentOrders = [
-        ['id' => 'TXN-84721', 'customer' => 'Alice Umutoni', 'items' => 'Classic Gold Chain (1)', 'total' => 249.00, 'status' => 'Pending', 'status_color' => 'bg-amber-100 text-amber-800'],
-        ['id' => 'TXN-19482', 'customer' => 'Jean Keza', 'items' => 'Silk Evening Dress (1)', 'total' => 189.00, 'status' => 'Processing', 'status_color' => 'bg-blue-100 text-blue-800'],
-        ['id' => 'TXN-47201', 'customer' => 'Eric Mugisha', 'items' => 'Minimalist Silver Ring (2)', 'total' => 170.00, 'status' => 'Shipped', 'status_color' => 'bg-green-100 text-green-800']
+        ['id' => 'TXN-84721', 'customer' => 'Alice Umutoni', 'items' => 'Classic Gold Chain (1)', 'total' => 249.00, 'status' => 'Pending', 'status_color' => 'text-amber-700 border-amber-200 bg-amber-50/30'],
+        ['id' => 'TXN-19482', 'customer' => 'Jean Keza', 'items' => 'Silk Evening Dress (1)', 'total' => 189.00, 'status' => 'Processing', 'status_color' => 'text-blue-700 border-blue-200 bg-blue-50/30'],
+        ['id' => 'TXN-47201', 'customer' => 'Eric Mugisha', 'items' => 'Minimalist Silver Ring (2)', 'total' => 170.00, 'status' => 'Shipped', 'status_color' => 'text-emerald-700 border-emerald-200 bg-emerald-50/30']
     ];
 @endphp
 
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
 
-        <!-- Welcoming Header Segment Block -->
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
-            <p class="text-sm text-gray-500 mt-1">Real-time performance metrics and order registry updates for your
-                e-commerce engine.</p>
+        .luxury-portal {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAFAFA;
+        }
+
+        .editorial-title {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .gold-accent-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+        }
+
+        .thin-border {
+            border-color: rgba(212, 175, 55, 0.15);
+        }
+
+        /* Premium custom scrollbar for high-end feel */
+        .custom-x-scroll::-webkit-scrollbar {
+            height: 3px;
+        }
+
+        .custom-x-scroll::-webkit-scrollbar-track {
+            background: #F5F5F5;
+        }
+
+        .custom-x-scroll::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+        }
+    </style>
+
+    <div class="luxury-portal space-y-16 p-2 sm:p-6 text-neutral-800 tracking-normal mix-blend-normal">
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-200 pb-8 gap-6">
+            <div class="max-w-xl">
+                <span class="text-[10px] uppercase tracking-[0.3em] font-semibold text-[#D4AF37] block mb-2">Maison
+                    Executive Command</span>
+                <h1 class="editorial-title text-4xl sm:text-5xl font-light tracking-wide text-neutral-900">Dashboard
+                    Overview</h1>
+                <p class="editorial-title italic text-base text-neutral-500 mt-2 font-light leading-relaxed">
+                    Real-time boutique metrics and customer transaction registries curated for the Jesca Jewery commerce
+                    engine.
+                </p>
+            </div>
+            <div class="text-left md:text-right font-mono text-xs tracking-widest text-neutral-400">
+                <span
+                    class="block text-[9px] uppercase font-sans font-semibold text-neutral-500 tracking-widest mb-1">System
+                    Pipeline Status</span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-900 text-white rounded-none">
+                    <span class="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-pulse"></span>
+                    SECURE LIVE ENVIRONMENT
+                </span>
+            </div>
         </div>
 
-        <!-- Analytics Cards Grid Matrix Row -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @foreach($stats as $stat)
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center space-x-4">
-                    <div class="p-3 rounded-lg {{ $stat['bg'] }}">
-                        <svg class="h-6 w-6 {{ $stat['color'] }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-neutral-200 border border-neutral-200 bg-white shadow-[0_4px_20px_-10px_rgba(0,0,0,0.03)]">
+            @foreach($stats as $index => $stat)
+                <div
+                    class="p-8 group hover:bg-neutral-50/60 transition-all duration-500 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-0 bg-[#D4AF37] group-hover:h-full transition-all duration-300">
                     </div>
-                    <div>
+
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span
+                                class="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 group-hover:text-neutral-600 transition-colors block">
+                                {{ $stat['label'] }}
+                            </span>
+                            <span class="text-xs text-[#D4AF37]/50 font-mono">// 0{{ $index + 1 }}</span>
+                        </div>
+                        <span class="editorial-title text-3xl sm:text-4xl font-light text-neutral-900 tracking-wide block pt-4">
+                            {{ $stat['value'] }}
+                        </span>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-between pt-4 border-t border-neutral-100">
+                        <span class="text-[10px] tracking-wider text-neutral-500 font-medium">System Registry Counter</span>
                         <span
-                            class="text-xs text-gray-400 font-semibold uppercase tracking-wider block">{{ $stat['label'] }}</span>
-                        <span class="text-2xl font-extrabold text-gray-900 mt-0.5 block">{{ $stat['value'] }}</span>
+                            class="inline-block px-2 py-0.5 text-[9px] font-mono tracking-tighter uppercase {{ $stat['color'] }} {{ $stat['bg'] }} border border-current/10">
+                            Active Sync
+                        </span>
                     </div>
                 </div>
             @endforeach
         </div>
 
-        <!-- Split Registry Action View Segment Matrix -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
 
-            <!-- Left 2 Columns: Recent Orders Table Component Overview -->
-            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
-                <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                    <h3 class="font-bold text-gray-900 text-lg">Recent Customer Transactions</h3>
+            <div class="lg:col-span-2 space-y-4">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-2 border-b border-neutral-200">
+                    <div class="flex items-center gap-3">
+                        <h3 class="editorial-title text-2xl font-normal text-neutral-900 tracking-wide">Recent Transactions
+                        </h3>
+                        <span class="text-[10px] font-mono px-2 py-0.5 bg-neutral-100 text-neutral-500">Live Registry
+                            Logs</span>
+                    </div>
                     <a href="{{ route('admin.orders.index') }}"
-                        class="text-xs font-semibold text-amber-600 hover:text-amber-700 transition-colors">View All Orders
-                        &rarr;</a>
+                        class="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#D4AF37] hover:text-neutral-900 border-b border-transparent hover:border-neutral-900 transition-all duration-300 pb-0.5">
+                        View Complete Ledger &rarr;
+                    </a>
                 </div>
 
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto custom-x-scroll">
                     <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead
-                            class="bg-gray-50 text-xs text-gray-400 uppercase tracking-wider font-semibold border-b border-gray-100">
-                            <tr>
-                                <th class="px-6 py-3">Order ID</th>
-                                <th class="px-6 py-3">Customer</th>
-                                <th class="px-6 py-3">Items Purchased</th>
-                                <th class="px-6 py-3">Total Due</th>
-                                <th class="px-6 py-3">Fulfillment Status</th>
+                        <thead>
+                            <tr
+                                class="text-[10px] text-neutral-400 uppercase tracking-[0.2em] font-semibold border-b border-neutral-200">
+                                <th class="py-4 font-medium">Order ID</th>
+                                <th class="py-4 font-medium px-4">Client Representative</th>
+                                <th class="py-4 font-medium px-4">Manifest Line Items</th>
+                                <th class="py-4 font-medium px-4 text-right">Net Value</th>
+                                <th class="py-4 font-medium text-right pl-4">Fulfillment Allocation</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100 text-gray-700 font-medium">
+                        <tbody class="divide-y divide-neutral-100 text-neutral-700">
                             @foreach($recentOrders as $order)
-                                <tr class="hover:bg-gray-50/50 transition-colors">
-                                    <td class="px-6 py-4 font-mono text-gray-900 text-xs">{{ $order['id'] }}</td>
-                                    <td class="px-6 py-4 text-sm">{{ $order['customer'] }}</td>
-                                    <td class="px-6 py-4 text-xs text-gray-500">{{ $order['items'] }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-900 font-bold">
-                                        ${{ number_format($order['total'], 2) }}</td>
-                                    <td class="px-6 py-4">
+                                <tr class="group hover:bg-neutral-50/80 transition-all duration-300">
+                                    <td class="py-5 font-mono text-neutral-900 text-xs tracking-tight font-medium">
+                                        {{ $order['id'] }}
+                                    </td>
+                                    <td class="py-5 text-sm font-medium text-neutral-800 px-4">
+                                        {{ $order['customer'] }}
+                                    </td>
+                                    <td class="py-5 text-xs text-neutral-500 italic font-light px-4">
+                                        {{ $order['items'] }}
+                                    </td>
+                                    <td class="py-5 text-sm text-neutral-900 font-semibold text-right px-4">
+                                        ${{ number_format($order['total'], 2) }}
+                                    </td>
+                                    <td class="py-5 text-right pl-4">
                                         <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{ $order['status_color'] }}">
+                                            class="inline-flex items-center px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-semibold border {{ $order['status_color'] }}">
                                             {{ $order['status'] }}
                                         </span>
                                     </td>
@@ -90,28 +165,42 @@
                 </div>
             </div>
 
-            <!-- Right 1 Column: Platform Short Actions Widget -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex flex-col justify-between">
-                <div>
-                    <h3 class="font-bold text-gray-900 text-lg border-b border-gray-100 pb-3 mb-4">Quick Management
-                        Utilities</h3>
-                    <p class="text-xs text-gray-500 mb-6 leading-relaxed">Direct shortcuts to critical inventory modules.
-                        Use these controllers during verification scripts to demonstrate record alteration routines.</p>
-
-                    <div class="space-y-3">
-                        <a href="{{ route('admin.products.create') }}"
-                            class="w-full bg-gray-900 text-white font-medium py-2.5 px-4 rounded-md hover:bg-amber-600 transition text-center block text-sm shadow-sm">
-                            Add New Catalog Item
-                        </a>
-                        <a href="{{ route('admin.products.index') }}"
-                            class="w-full border border-gray-300 text-gray-700 font-medium py-2.5 px-4 rounded-md hover:bg-gray-50 transition text-center block text-sm">
-                            Manage Product Catalog Inventory
-                        </a>
-                    </div>
+            <div
+                class="border border-neutral-200 bg-white p-8 space-y-8 relative overflow-hidden shadow-[0_4px_25px_-12px_rgba(0,0,0,0.05)]">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-neutral-50 rounded-full translate-x-16 -translate-y-16 -z-10 border border-neutral-100">
                 </div>
 
-                <div class="mt-8 border-t border-gray-100 pt-4 text-center text-xs text-gray-400 font-medium tracking-wide">
-                    Secure SSL Production Pipeline Mockup
+                <div class="space-y-2">
+                    <h3
+                        class="editorial-title text-2xl font-normal text-neutral-900 tracking-wide pb-2 border-b border-neutral-100">
+                        Management Hub
+                    </h3>
+                    <p class="text-xs text-neutral-500 font-light leading-relaxed pt-1">
+                        Direct administrative bypass control arrays to manage physical product assets. Utilize these
+                        controllers during operational verification routines to demonstrate synchronous records
+                        manipulation.
+                    </p>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <a href="{{ route('admin.products.create') }}"
+                        class="w-full bg-neutral-900 text-white font-medium py-3 px-4 rounded-none hover:bg-[#D4AF37] transition-all duration-500 text-center block text-xs uppercase tracking-[0.2em] shadow-sm">
+                        Create Catalog Entry
+                    </a>
+
+                    <a href="{{ route('admin.products.index') }}"
+                        class="w-full border border-neutral-300 text-neutral-700 font-medium py-3 px-4 rounded-none hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-500 text-center block text-xs uppercase tracking-[0.2em]">
+                        Audit Asset Inventory
+                    </a>
+                </div>
+
+                <div
+                    class="pt-6 border-t border-neutral-100 text-center flex flex-col items-center justify-center space-y-2">
+                    <div class="w-12 gold-accent-line"></div>
+                    <span class="text-[9px] font-mono text-neutral-400 tracking-[0.25em] uppercase block">
+                        Maison Security Pipeline // SSL Verified
+                    </span>
                 </div>
             </div>
 
