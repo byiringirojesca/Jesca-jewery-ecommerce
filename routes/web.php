@@ -10,10 +10,6 @@ use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\CheckoutController;
 use App\Http\Controllers\client\ProductController as ClientProductController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +17,6 @@ use App\Models\User;
 |--------------------------------------------------------------------------
 */
 
-// Homepage Layout View
 Route::get('/', function () {
     return view('client.home');
 })->name('home');
@@ -34,50 +29,42 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'destroy'])->name('cart.remove');
 
-    // Checkout Routine Routes
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/process', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/checkout/confirmation/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 });
 
-
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes (Native Controllerless Implementation)
+| Authentication Routes
 |--------------------------------------------------------------------------
 */
 
-
-
 Route::middleware('guest')->group(function () {
-
-    // Registration Views & Processing
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register']);
-
 
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
 });
 
-// Authenticated Session Termination Endpoint
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
-
 
 /*
 |--------------------------------------------------------------------------
-| Back-office Administrative Console Views
+| Back-office Administrative Console (Secured)
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->group(function () {
+// The 'auth' and 'admin' middleware are applied to the entire group
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
 
-    // Core Admin Dashboard Overview View
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // --- Inventory Products Management ---
+    // Inventory
     Route::resource('products', ProductController::class);
 
-    // --- Product Categories Management ---
+    // Categories
     Route::get('/categories', function () {
         return view('admin.categories.index');
     })->name('categories.index');
@@ -88,14 +75,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/categories/edit/{id}', function () {
         return view('admin.categories.edit');
-    })->name('categories.create');
+    })->name('categories.edit'); // Fixed name typo here
 
-    // --- Customer Orders Registry ---
+    // Orders Management
     Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
-    Route::patch('/orders/{id}/invoice', [OrderManagementController::class, 'updateStatus'])->name('orders.update-status');
     Route::get('/orders/{order}', [OrderManagementController::class, 'show'])->name('orders.show');
+    // Updated route name to 'orders.status' to match your form action
+    Route::patch('/orders/{id}/status', [OrderManagementController::class, 'updateStatus'])->name('orders.status');
 
-    // --- System Users Management ---
+    // Users Management
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
     Route::put('/users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.update-permissions');
