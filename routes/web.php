@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderManagementController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\client\CartController;
@@ -23,7 +26,7 @@ Route::get('/', function () {
     return view('client.home');
 })->name('home');
 
-    Route::resource('products', ClientProductController::class)->only(['index', 'show']);
+Route::resource('products', ClientProductController::class)->only(['index', 'show']);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -69,9 +72,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->midd
 Route::prefix('admin')->name('admin.')->group(function () {
 
     // Core Admin Dashboard Overview View
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // --- Inventory Products Management ---
     Route::resource('products', ProductController::class);
@@ -90,16 +91,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     })->name('categories.create');
 
     // --- Customer Orders Registry ---
-    Route::get('/orders', function () {
-        return view('admin.orders.index');
-    })->name('orders.index');
-
-    Route::get('/orders/{id}', function ($id) {
-        return view('admin.orders.show', ['id' => $id]);
-    })->name('orders.show');
+    Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
+    Route::patch('/orders/{id}/invoice', [OrderManagementController::class, 'updateStatus'])->name('orders.update-status');
+    Route::get('/orders/{order}', [OrderManagementController::class, 'show'])->name('orders.show');
 
     // --- System Users Management ---
-    Route::get('/users', function () {
-        return view('admin.users.index');
-    })->name('users.index');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+    Route::put('/users/{user}/permissions', [UserController::class, 'updatePermissions'])->name('users.update-permissions');
 });

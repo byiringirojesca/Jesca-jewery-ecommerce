@@ -1,18 +1,3 @@
-@php
-    // Quick admin dashboard analytics mock data layer
-    $stats = [
-        ['label' => 'Total Revenue', 'value' => '$4,295.00', 'color' => 'text-emerald-700', 'bg' => 'bg-emerald-50/40'],
-        ['label' => 'Active Orders', 'value' => '12 Pending', 'color' => 'text-amber-700', 'bg' => 'bg-amber-50/40'],
-        ['label' => 'Total Products', 'value' => '84 Items', 'color' => 'text-stone-700', 'bg' => 'bg-stone-100/50'],
-        ['label' => 'Registered Users', 'value' => '142 Clients', 'color' => 'text-neutral-800', 'bg' => 'bg-neutral-100/50']
-    ];
-
-    $recentOrders = [
-        ['id' => 'TXN-84721', 'customer' => 'Alice Umutoni', 'items' => 'Classic Gold Chain (1)', 'total' => 249.00, 'status' => 'Pending', 'status_color' => 'text-amber-700 border-amber-200 bg-amber-50/30'],
-        ['id' => 'TXN-19482', 'customer' => 'Jean Keza', 'items' => 'Silk Evening Dress (1)', 'total' => 189.00, 'status' => 'Processing', 'status_color' => 'text-blue-700 border-blue-200 bg-blue-50/30'],
-        ['id' => 'TXN-47201', 'customer' => 'Eric Mugisha', 'items' => 'Minimalist Silver Ring (2)', 'total' => 170.00, 'status' => 'Shipped', 'status_color' => 'text-emerald-700 border-emerald-200 bg-emerald-50/30']
-    ];
-@endphp
 
 @extends('layouts.admin')
 

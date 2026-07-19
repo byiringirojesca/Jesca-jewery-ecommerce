@@ -1,31 +1,3 @@
-@php
-    // Mock instance layer representing a distinct order record loaded from database lookups
-    $order = [
-        'id' => 'TXN-84721',
-        'customer_name' => 'Alice Umutoni',
-        'email' => 'alice@example.com',
-        'phone' => '+250 788 000 000',
-        'shipping_address' => 'KN 7 Rd, Nyarugenge, Kigali, Rwanda',
-        'payment_method' => 'Mobile Money (MoMo)',
-        'status' => 'Pending',
-        'status_color' => 'bg-amber-50 text-amber-700 border-amber-200',
-        'date' => '18 Jul 2026',
-        'subtotal' => 249.00,
-        'shipping_fee' => 5.00,
-        'total_amount' => 254.00,
-        'items' => [
-            [
-                'name' => 'Classic Gold Chain',
-                'sku' => 'JW-GLD-001',
-                'price' => 249.00,
-                'quantity' => 1,
-                'total' => 249.00,
-                'image' => 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=150&q=80'
-            ]
-        ]
-    ];
-@endphp
-
 @extends('layouts.admin')
 
 @section('content')
@@ -39,7 +11,7 @@
                     <span>/</span>
                     <span class="text-neutral-600">Details View</span>
                 </div>
-                <h1 class="font-serif text-4xl sm:text-5xl font-light tracking-wide text-neutral-900 mt-2">Order {{ $order['id'] }}</h1>
+                <h1 class="font-serif text-4xl sm:text-5xl font-light tracking-wide text-neutral-900 mt-2">Order #{{ $order->id }}</h1>
             </div>
             
             <div class="flex items-center gap-3 w-full md:w-auto">
@@ -47,7 +19,7 @@
                     class="w-1/2 md:w-auto text-center border border-neutral-300 text-neutral-700 font-medium py-3 px-6 rounded-none hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-500 text-xs uppercase tracking-[0.2em]">
                     Back to List
                 </a>
-                <button type="button"
+                <button type="button" onclick="window.print()"
                     class="w-1/2 md:w-auto text-center bg-neutral-900 text-white font-medium py-3 px-6 rounded-none hover:bg-amber-600 transition-all duration-500 text-xs uppercase tracking-[0.2em] shadow-sm">
                     Print Invoice
                 </button>
@@ -77,23 +49,25 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-neutral-100 text-neutral-700">
-                                @foreach($order['items'] as $productItem)
+                                @foreach($order->items as $productItem)
                                     <tr class="group hover:bg-neutral-50/40 transition-colors duration-300">
                                         <td class="px-6 py-5">
                                             <div class="flex items-center gap-4">
                                                 <div class="w-14 h-14 bg-neutral-50 border border-neutral-200 rounded-none overflow-hidden flex-shrink-0">
-                                                    <img src="{{ $productItem['image'] }}" alt="{{ $productItem['name'] }}"
+                                                    {{-- If product item maps to an Eloquent relationship, ensure fields like 'image' match the structural attribute or fallback --}}
+                                                    <img src="{{ $productItem->product->images[0] ?? asset('images/placeholder.png') }}" alt="{{ $productItem->name }}"
                                                         class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
                                                 </div>
                                                 <div>
-                                                    <span class="font-semibold text-neutral-900 text-sm block">{{ $productItem['name'] }}</span>
-                                                    <span class="text-xs font-mono text-neutral-400 block mt-0.5 tracking-normal">{{ $productItem['sku'] }}</span>
+                                                    <span class="font-semibold text-neutral-900 text-sm block">{{ $productItem->product->name }}</span>
+                                                    <span class="text-xs font-mono text-neutral-400 block mt-0.5 tracking-normal">{{ $productItem->id }}</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-5 text-sm text-neutral-600">${{ number_format($productItem['price'], 2) }}</td>
-                                        <td class="px-6 py-5 text-xs font-mono text-neutral-400">{{ $productItem['quantity'] }}x</td>
-                                        <td class="px-6 py-5 text-sm text-neutral-900 font-semibold text-right">${{ number_format($productItem['total'], 2) }}</td>
+                                        <td class="px-6 py-5 text-sm text-neutral-600">${{ number_format($productItem->price, 2) }}</td>
+                                        <td class="px-6 py-5 text-xs font-mono text-neutral-400">{{ $productItem->quantity }}x</td>
+                                        {{-- Calculated total if not explicitly saved as a field --}}
+                                        <td class="px-6 py-5 text-sm text-neutral-900 font-semibold text-right">${{ number_format($productItem->total ?? ($productItem->price * $productItem->quantity), 2) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -105,15 +79,15 @@
                         <div class="w-full sm:w-72 space-y-3.5 text-xs uppercase tracking-wider text-neutral-500 font-medium">
                             <div class="flex justify-between">
                                 <span>Subtotal Amount</span>
-                                <span class="text-neutral-900 font-semibold font-mono tracking-normal">${{ number_format($order['subtotal'], 2) }}</span>
+                                <span class="text-neutral-900 font-semibold font-mono tracking-normal">${{ number_format($order->subtotal, 2) }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span>Fulfillment Shipping</span>
-                                <span class="text-neutral-900 font-semibold font-mono tracking-normal">${{ number_format($order['shipping_fee'], 2) }}</span>
+                                <span class="text-neutral-900 font-semibold font-mono tracking-normal">${{ number_format($order->shipping_fee, 2) }}</span>
                             </div>
                             <div class="flex justify-between text-sm text-neutral-900 font-bold pt-4 border-t border-neutral-200/80">
                                 <span class="text-xs uppercase tracking-[0.15em]">Total Gross Invoice</span>
-                                <span class="text-amber-600 font-mono tracking-normal">${{ number_format($order['total_amount'], 2) }}</span>
+                                <span class="text-amber-600 font-mono tracking-normal">${{ number_format($order->total_amount, 2) }}</span>
                             </div>
                         </div>
                     </div>
@@ -123,7 +97,7 @@
                 <div class="bg-white border border-neutral-200 p-6 md:p-8 rounded-none shadow-[0_4px_25px_-12px_rgba(0,0,0,0.05)]">
                     <h3 class="text-xs uppercase tracking-[0.15em] font-semibold text-neutral-900 mb-5">Update Order Processing State</h3>
                     
-                    <form action="#" method="POST" class="flex flex-col sm:flex-row items-end gap-4">
+                    <form action="{{ route('admin.orders.update-status', $order->id) }}" method="POST" class="flex flex-col sm:flex-row items-end gap-4">
                         @csrf
                         @method('PATCH')
                         <div class="w-full sm:flex-1">
@@ -133,17 +107,17 @@
                             <div class="relative">
                                 <select name="status"
                                     class="w-full border border-neutral-300 rounded-none bg-white px-4 py-3 text-sm text-neutral-800 focus:outline-none focus:border-amber-500 font-medium appearance-none transition-colors">
-                                    <option value="Pending" {{ $order['status'] == 'Pending' ? 'selected' : '' }}>Pending Verification</option>
-                                    <option value="Processing" {{ $order['status'] == 'Processing' ? 'selected' : '' }}>Processing / Packaging</option>
-                                    <option value="Shipped" {{ $order['status'] == 'Shipped' ? 'selected' : '' }}>Shipped / Dispatch</option>
-                                    <option value="Cancelled" {{ $order['status'] == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    <option value="Pending" {{ $order->status == 'Pending' ? 'selected' : '' }}>Pending Verification</option>
+                                    <option value="Processing" {{ $order->status == 'Processing' ? 'selected' : '' }}>Processing / Packaging</option>
+                                    <option value="Shipped" {{ $order->status == 'Shipped' ? 'selected' : '' }}>Shipped / Dispatch</option>
+                                    <option value="Cancelled" {{ $order->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-neutral-400 border-l border-neutral-200">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                                 </div>
                             </div>
                         </div>
-                        <button type="button"
+                        <button type="submit"
                             class="w-full sm:w-auto bg-neutral-900 text-white font-medium py-[13px] px-6 rounded-none hover:bg-amber-600 transition-all duration-500 text-xs uppercase tracking-[0.2em] whitespace-nowrap">
                             Apply Modification
                         </button>
@@ -160,20 +134,23 @@
                         Client Profile
                     </h2>
 
+                    {{-- Using clean fallback properties or safe relationship navigation --}}
                     <div class="space-y-1.5">
                         <span class="text-[10px] text-neutral-400 font-semibold uppercase tracking-[0.15em] block">Full Legal Name</span>
-                        <span class="text-sm font-semibold text-neutral-900 block font-serif tracking-wide">{{ $order['customer_name'] }}</span>
+                        <span class="text-sm font-semibold text-neutral-900 block font-serif tracking-wide">{{ $order->customer_name ?? ($order->user->name ?? 'Guest User') }}</span>
                     </div>
 
                     <div class="space-y-1.5 pt-1">
                         <span class="text-[10px] text-neutral-400 font-semibold uppercase tracking-[0.15em] block">Email Address Channel</span>
-                        <a href="mailto:{{ $order['email'] }}"
-                            class="text-sm font-medium text-amber-600 hover:text-neutral-900 transition-colors block truncate tracking-tight">{{ $order['email'] }}</a>
+                        <a href="mailto:{{ $order->email ?? ($order->user->email ?? '') }}"
+                            class="text-sm font-medium text-amber-600 hover:text-neutral-900 transition-colors block truncate tracking-tight">
+                            {{ $order->email ?? ($order->user->email ?? 'N/A') }}
+                        </a>
                     </div>
 
                     <div class="space-y-1.5 pt-1">
                         <span class="text-[10px] text-neutral-400 font-semibold uppercase tracking-[0.15em] block">Contact Phone Vector</span>
-                        <span class="text-sm font-semibold text-neutral-900 block font-mono tracking-normal">{{ $order['phone'] }}</span>
+                        <span class="text-sm font-semibold text-neutral-900 block font-mono tracking-normal">{{ $order->phone ?? 'N/A' }}</span>
                     </div>
                 </div>
 
@@ -186,25 +163,38 @@
                     <div class="space-y-1.5">
                         <span class="text-[10px] text-neutral-400 font-semibold uppercase tracking-[0.15em] block">Routing Destination Address</span>
                         <span class="text-sm font-medium text-neutral-700 block leading-relaxed italic font-serif">
-                            {{ $order['shipping_address'] }}
+                            {{ $order->shipping_address }}
                         </span>
                     </div>
 
                     <div class="space-y-1.5 pt-2 border-t border-neutral-50">
                         <span class="text-[10px] text-neutral-400 font-semibold uppercase tracking-[0.15em] block">Clearing Gateway Method</span>
-                        <span class="text-sm font-semibold text-neutral-900 block tracking-tight">{{ $order['payment_method'] }}</span>
+                        <span class="text-sm font-semibold text-neutral-900 block tracking-tight">{{ $order->payment_method }}</span>
                     </div>
 
                     <div class="space-y-1.5 pt-2 border-t border-neutral-50">
                         <span class="text-[10px] text-neutral-400 font-semibold uppercase tracking-[0.15em] block">Workflow Datestamp</span>
-                        <span class="text-sm font-medium text-neutral-500 block font-mono">{{ $order['date'] }}</span>
+                        <span class="text-sm font-medium text-neutral-500 block font-mono">
+                            {{-- Check if date is a Carbon instance for clean presentation, otherwise print string --}}
+                            {{ method_exists($order->created_at, 'format') ? $order->created_at->format('Y-m-d H:i') : ($order->date ?? 'N/A') }}
+                        </span>
                     </div>
 
                     <div class="space-y-2 pt-2 border-t border-neutral-50">
                         <span class="text-[10px] text-neutral-400 font-semibold uppercase tracking-[0.15em] block">Current Status Flag</span>
                         <div class="pt-0.5">
-                            <span class="inline-flex items-center px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-semibold border {{ $order['status_color'] }} rounded-none">
-                                {{ $order['status'] }}
+                            @php
+                                // Inline mapping for context colors based on standard Eloquent state flags
+                                $colorMap = [
+                                    'Pending' => 'border-neutral-300 text-neutral-500 bg-neutral-50',
+                                    'Processing' => 'border-amber-400 text-amber-700 bg-amber-50',
+                                    'Shipped' => 'border-emerald-400 text-emerald-700 bg-emerald-50',
+                                    'Cancelled' => 'border-rose-400 text-rose-700 bg-rose-50'
+                                ];
+                                $statusBadge = $colorMap[$order->status] ?? 'border-neutral-300 text-neutral-600';
+                            @endphp
+                            <span class="inline-flex items-center px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-semibold border {{ $statusBadge }} rounded-none">
+                                {{ $order->status }}
                             </span>
                         </div>
                     </div>
