@@ -241,8 +241,6 @@ The application consists of the following core entities, connected through forei
 
 This relational structure keeps product, cart, and order data normalized, avoids duplication, and allows efficient querying (e.g., fetching a user's full order history with related product and category data in a single Eloquent query using eager loading).
 
-> _An ERD diagram image can be added here, e.g. `![ERD](screenshots/erd-diagram.png)`, once exported from your migration/database design tool._
-
 ---
 
 ## 8. Screenshots of the Application
@@ -320,7 +318,7 @@ https://github.com/byiringiroJesca/Jesca-jewery-ecommerce
 The application is packaged as a Docker image (see [Section 12](#12-docker-implementation)) and deployed to **Railway**, configured to build from the project's `Dockerfile` via `railway.json`.
 
 ```text
-Live URL: [https://jJesca-jewery-ecommerce.up.railway.app]
+Live URL: [https://jesca-jewery-ecommerce-production.up.railway.app]
 ```
 
 
