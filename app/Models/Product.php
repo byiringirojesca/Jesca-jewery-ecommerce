@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -16,13 +17,18 @@ class Product extends Model
         'slug',
         'description',
         'price',
-        'stock'
+        'stock',
+        'images' // Enabled mass-assignment for array data
     ];
 
     /**
-     * The "booted" method of the model.
-     * Automatically generates a slug from the product name before saving.
+     * Automatically handles JSON encoding/decoding for our image links
      */
+    protected $casts = [
+        'images' => 'array',
+        'price'  => 'decimal:2'
+    ];
+
     protected static function booted(): void
     {
         static::creating(function (Product $product) {
@@ -38,12 +44,13 @@ class Product extends Model
         });
     }
 
-    /**
-     * Optional: Tells Laravel to use the slug column instead of the ID 
-     * for implicit route model binding (e.g., /products/{product})
-     */
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->string('slug')->unique(); // Added for clean URLs (e.g., /products/toyota-land-cruiser-2026)
+            $table->string('slug')->unique();
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->integer('stock');
+
+            $table->json('images')->nullable();
+
             $table->timestamps();
         });
     }

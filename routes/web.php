@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\client\ProductController as ClientProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,15 +21,7 @@ Route::get('/', function () {
     return view('client.home');
 })->name('home');
 
-// Product Catalog Listing Layout View
-Route::get('/products', function () {
-    return view('client.products.index');
-})->name('products.index');
-
-// Single Product Details Showcase View
-Route::get('/products/{id}', function ($id) {
-    return view('client.products.show');
-})->name('products.show');
+    Route::resource('products', ClientProductController::class)->only(['index', 'show']);
 
 // Shopping Cart Overview View
 Route::get('/cart', function () {
@@ -57,34 +51,6 @@ Route::middleware('guest')->group(function () {
 // Authenticated Session Termination Endpoint
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Login Views & Processing
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::post('/login', function (Request $request) {
-    $credentials = $request->validate([
-        'email' => 'required|string|email',
-        'password' => 'required|string',
-    ]);
-
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-        return redirect()->intended(route('home'));
-    }
-
-    return back()->withErrors([
-        'email' => 'The provided credentials do not match our records.',
-    ]);
-});
-
-// Logout Processing
-Route::post('/logout', function (Request $request) {
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    return redirect()->route('home');
-})->name('logout');
 
 
 /*
@@ -117,17 +83,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     })->name('dashboard');
 
     // --- Inventory Products Management ---
-    Route::get('/products', function () {
-        return view('admin.products.index');
-    })->name('products.index');
-
-    Route::get('/products/create', function () {
-        return view('admin.products.create');
-    })->name('products.create');
-
-    Route::get('/products/{id}/edit', function ($id) {
-        return view('admin.products.edit', ['id' => $id]);
-    })->name('products.edit');
+    Route::resource('products', ProductController::class);
 
     // --- Product Categories Management ---
     Route::get('/categories', function () {
