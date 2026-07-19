@@ -82,11 +82,11 @@
 
     <!-- Unified Interactive Product Context - Double quotes are protected inside the outer single quote framework -->
     <div x-data='{ 
-                    images: @json($mediaLedger), 
-                    activeImageIndex: 0,
-                    quantity: 1,
-                    maxStock: {{ $stockCount }}
-                 }' class="w-full max-w-[1700px] mx-auto bg-luxury-white pb-32 pt-6">
+                        images: @json($mediaLedger), 
+                        activeImageIndex: 0,
+                        quantity: 1,
+                        maxStock: {{ $stockCount }}
+                     }' class="w-full max-w-[1700px] mx-auto bg-luxury-white pb-32 pt-6">
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
 
@@ -175,7 +175,8 @@
                 </div>
 
                 <!-- Transaction Submission Interface -->
-                <form action="#" method="POST" class="w-full">
+                <form action="{{ route('cart.add') }}" method="POST" class="w-full">
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
                     @csrf
                     <div class="flex flex-col sm:flex-row items-stretch gap-6">
 
@@ -194,8 +195,8 @@
                             </select>
                         </div>
 
-                        <!-- Button handling interactive submission state states -->
-                        <button type="button" :disabled="maxStock === 0"
+                        <!-- FIXED: Changed type="button" to type="submit" so the form can execute -->
+                        <button type="submit" :disabled="maxStock === 0"
                             class="flex-grow group relative border border-luxury-black text-luxury-black hover:text-luxury-white font-sans text-xs uppercase tracking-[0.4em] font-semibold py-4 px-8 transition-colors duration-500 overflow-hidden disabled:opacity-40 disabled:cursor-not-allowed">
                             <span
                                 class="absolute inset-0 w-full h-full bg-luxury-black transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) -z-10"></span>

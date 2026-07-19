@@ -19,7 +19,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',  
+        'role',
         'status',
     ];
 
@@ -62,5 +62,10 @@ class User extends Authenticatable
     public function isActive(): bool
     {
         return $this->status === 'active';
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
     }
 }

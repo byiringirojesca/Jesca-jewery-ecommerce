@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\ProductController as ClientProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -23,10 +24,12 @@ Route::get('/', function () {
 
     Route::resource('products', ClientProductController::class)->only(['index', 'show']);
 
-// Shopping Cart Overview View
-Route::get('/cart', function () {
-    return view('client.cart.index');
-})->name('cart.index');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/add', [CartController::class, 'store'])->name('cart.add');
+    Route::patch('/cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{cartItem}', [CartController::class, 'destroy'])->name('cart.remove');
+});
 
 
 /*
