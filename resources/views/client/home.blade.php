@@ -28,7 +28,7 @@
                 </h1>
                 <p class="text-sm font-light text-luxury-charcoal/80 leading-relaxed max-w-md mb-12 tracking-wide">
                     Deliberately raw, architectural weights crafted by hand. A deep structural collision between fine rare
-                    mineral geology and fluid unstructured silks[cite: 11].
+                    mineral geology and fluid unstructured silks.
                 </p>
                 <div>
                     <a href="{{ route('products.index') }}"

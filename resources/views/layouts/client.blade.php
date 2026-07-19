@@ -64,8 +64,6 @@
 
 <body class="font-sans antialiased min-h-screen flex flex-col selection:bg-[#D4AF37] selection:text-[#0D0D0D]">
 
-    <!-- Sticky Header Module -->
-    <!-- Sticky Header Module -->
     <header x-data="{ scrolled: false, mobileMenuOpen: false }" @scroll.window="scrolled = window.scrollY > 20"
         :class="scrolled ? 'bg-[#FAF8F5]/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'"
         class="fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-transparent hover:border-[#F3EFE9]">
@@ -73,14 +71,12 @@
         <div class="max-w-[1400px] mx-auto px-4 md:px-8">
             <div class="flex justify-between items-center h-12">
 
-                <!-- Left: Navigation -->
                 <div
                     class="hidden md:flex items-center space-x-8 text-[10px] uppercase tracking-[0.25em] font-medium text-[#0D0D0D]">
                     <a href="{{ route('products.index') }}" class="hover:text-[#D4AF37] transition-colors">Shop</a>
                     <a href="#" class="hover:text-[#D4AF37] transition-colors">Atelier</a>
                 </div>
 
-                <!-- Mobile Menu Trigger -->
                 <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-[#0D0D0D]">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -88,31 +84,34 @@
                     </svg>
                 </button>
 
-                <!-- Center: Logo -->
                 <div class="absolute left-1/2 transform -translate-x-1/2 text-center">
                     <a href="{{ route('home') }}"
                         class="text-2xl font-serif tracking-[0.2em] font-light text-[#0D0D0D]">JESCA</a>
                 </div>
 
-                <!-- Right: Utilities -->
                 <div class="flex items-center space-x-5">
                     @auth
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}"
+                                class="hidden lg:block text-[10px] uppercase tracking-widest hover:text-[#D4AF37] transition-colors">Admin</a>
+                        @endif
+
                         <span class="hidden lg:block text-[10px] uppercase tracking-widest text-[#0D0D0D]/60 italic">
-                            Welcome back, {{ explode(' ', Auth::user()->name)[0] }}
+                            {{ explode(' ', Auth::user()->name)[0] }}
                         </span>
-                        <a href="#" class="p-2 hover:text-[#D4AF37] transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </a>
+
+                        <form action="{{ route('logout') }}" method="POST" class="hidden lg:block">
+                            @csrf
+                            <button type="submit"
+                                class="text-[10px] uppercase tracking-widest hover:text-red-700 transition-colors">Sign
+                                Out</button>
+                        </form>
                     @else
                         <a href="{{ route('login') }}"
                             class="hidden sm:block text-[10px] uppercase tracking-widest hover:text-[#D4AF37] transition-colors">Sign
                             In</a>
                     @endauth
 
-                    <!-- Cart Count Display -->
                     <a href="{{ route('cart.index') }}" class="relative p-2 hover:text-[#D4AF37] transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -122,26 +121,26 @@
                             <span
                                 class="absolute top-0 right-0 flex h-3 w-3 items-center justify-center rounded-full bg-[#0D0D0D] text-[8px] font-bold text-white">
                                 {{ $cartCount }} </span>
-
                         @endif
-                        <span
-                            class="absolute top-0 right-0 flex h-3 w-3 items-center justify-center rounded-full bg-[#0D0D0D] text-[8px] font-bold text-white">
-                            {{ $cartCount }} </span>
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Drawer -->
         <div x-show="mobileMenuOpen" x-cloak
             class="md:hidden absolute top-full left-0 w-full bg-[#FAF8F5] border-b border-[#F3EFE9] p-6 space-y-4">
             <a href="{{ route('products.index') }}"
                 class="block text-xs uppercase tracking-widest py-2 border-b">Shop</a>
             <a href="#" class="block text-xs uppercase tracking-widest py-2 border-b">Atelier</a>
             @auth
+                @if(auth()->user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="block text-xs uppercase tracking-widest py-2 border-b">Admin
+                        Dashboard</a>
+                @endif
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="text-xs uppercase tracking-widest text-red-700 py-2">Sign Out</button>
+                    <button type="submit"
+                        class="block w-full text-left text-xs uppercase tracking-widest text-red-700 py-2">Sign Out</button>
                 </form>
             @else
                 <a href="{{ route('login') }}" class="block text-xs uppercase tracking-widest py-2">Sign In</a>

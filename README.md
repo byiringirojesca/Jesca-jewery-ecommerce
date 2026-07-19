@@ -15,6 +15,7 @@
 An elegant e-commerce marketplace for jewelry and modern clothing, built with Laravel, Livewire, Alpine.js, and Tailwind CSS v4.
 
 **Author:** BYIRINGIRO Jesca — Information System Management Student
+**Reg NO:** : **24708/2024**
 
 ---
 
@@ -641,7 +642,7 @@ This project was developed for educational and academic purposes.
 
 Software Engineering Student 
 
-**Reg NO:** : **22222/2022**
+**Reg NO:** : **24708/2024**
 
 ---
 
