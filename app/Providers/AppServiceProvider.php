@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
                 $cartCount = CartItem::query()->where('cart_id', Auth::id())->sum('quantity');
             } else {
                 // Guest: count items by session_id
-                $cartCount = CartItem::query()->where('session_id', Session::getId())->sum('quantity');
+                $cartCount = 0;
             }
 
             $view->with('cartCount', $cartCount);
