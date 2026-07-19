@@ -1,28 +1,3 @@
-@php
-    // Quick frontend mockup data layer for order tracking and calculation review
-    $cartItems = [
-        [
-            'name' => 'Classic Gold Chain',
-            'category' => 'Jewelry',
-            'quantity' => 1,
-            'price' => 249.00
-        ],
-        [
-            'name' => 'Silk Evening Dress',
-            'category' => 'Clothing',
-            'quantity' => 1,
-            'price' => 189.00
-        ]
-    ];
-
-    $subtotal = 0;
-    foreach ($cartItems as $item) {
-        $subtotal += $item['price'] * $item['quantity'];
-    }
-    $deliveryFee = 5.00; // Estimated RWF base equivalent/mock shipping fee
-    $totalPrice = $subtotal + $deliveryFee;
-@endphp
-
 @extends('layouts.client')
 
 @section('content')
@@ -32,6 +7,18 @@
             box-shadow: none;
         }
     </style>
+
+    @php
+        // Calculate financial aggregates dynamically from real database relationship data
+        $subtotal = 0;
+        foreach ($cart->items as $item) {
+            if ($item->product) {
+                $subtotal += $item->product->price * $item->quantity;
+            }
+        }
+        $deliveryFee = 5.00; // Flat luxury logistics fee
+        $totalPrice = $subtotal + $deliveryFee;
+    @endphp
 
     <div class="w-full max-w-[1700px] mx-auto bg-luxury-white pb-32 pt-6">
 
@@ -45,6 +32,7 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start px-4 lg:px-0">
 
+            <!-- Left Column: Shipping & Details Input Matrix -->
             <div class="lg:col-span-7 flex flex-col">
                 <header class="mb-10">
                     <h2
@@ -53,7 +41,8 @@
                     </h2>
                 </header>
 
-                <form action="#" method="POST" class="space-y-12">
+                <!-- FIXED: Pointing form to secure store route -->
+                <form action="{{ route('checkout.store') }}" method="POST" class="space-y-12">
                     @csrf
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
@@ -123,10 +112,10 @@
                         </div>
                     </div>
 
+                    <!-- FIXED: Swapped type="button" to a structural native submit mechanism -->
                     <div class="pt-8">
-                        <button type="button"
-                            onclick="window.location.href='{{ route('checkout.confirmation', ['id' => 'TXN-' . rand(10000, 99999)]) }}'"
-                            class="w-full group relative border border-luxury-black text-luxury-black hover:text-luxury-white font-sans text-xs uppercase tracking-[0.4em] font-semibold py-4 px-8 transition-colors duration-500 overflow-hidden bg-transparent">
+                        <button type="submit"
+                            class="w-full group relative border border-luxury-black text-luxury-black hover:text-luxury-white font-sans text-xs uppercase tracking-[0.4em] font-semibold py-4 px-8 transition-colors duration-500 overflow-hidden bg-transparent cursor-pointer">
                             <span
                                 class="absolute inset-0 w-full h-full bg-luxury-black transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) -z-10"></span>
                             <span class="relative z-10">Place Order // ${{ number_format($totalPrice, 2) }}</span>
@@ -135,26 +124,31 @@
                 </form>
             </div>
 
+            <!-- Right Column: Live Dynamic Database Manifest Summary -->
             <div class="lg:col-span-5 lg:sticky lg:top-32 w-full">
                 <div class="border border-luxury-champagne p-8 lg:p-10 bg-transparent relative">
                     <h2 class="text-xs uppercase tracking-[0.4em] text-luxury-gold font-semibold mb-6">// Order Summary</h2>
 
                     <div class="divide-y divide-luxury-champagne/60 max-h-72 overflow-y-auto pr-2 mb-8 luxury-scrollbar">
-                        @foreach($cartItems as $item)
-                            <div class="py-4 flex items-center justify-between gap-6 first:pt-0 last:pb-0">
-                                <div class="flex flex-col">
-                                    <h4 class="font-serif font-light text-luxury-black text-sm tracking-wide mb-1">
-                                        {{ $item['name'] }}
-                                    </h4>
-                                    <span class="text-[9px] uppercase tracking-[0.2em] text-luxury-charcoal/50">
-                                        {{ $item['category'] }} <span
-                                            class="text-luxury-gold font-sans font-medium">x{{ $item['quantity'] }}</span>
+                        <!-- Map real relational models from CheckoutController -->
+                        @foreach($cart->items as $item)
+                            @php $product = $item->product; @endphp
+                            @if($product)
+                                <div class="py-4 flex items-center justify-between gap-6 first:pt-0 last:pb-0">
+                                    <div class="flex flex-col">
+                                        <h4 class="font-serif font-light text-luxury-black text-sm tracking-wide mb-1">
+                                            {{ $product->name }}
+                                        </h4>
+                                        <span class="text-[9px] uppercase tracking-[0.2em] text-luxury-charcoal/50">
+                                            {{ $product->category->name ?? 'Collection' }}
+                                            <span class="text-luxury-gold font-sans font-medium">x{{ $item->quantity }}</span>
+                                        </span>
+                                    </div>
+                                    <span class="text-xs font-mono font-medium text-luxury-black tracking-wider">
+                                        ${{ number_format($product->price * $item->quantity, 2) }}
                                     </span>
                                 </div>
-                                <span class="text-xs font-mono font-medium text-luxury-black tracking-wider">
-                                    ${{ number_format($item['price'] * $item['quantity'], 2) }}
-                                </span>
-                            </div>
+                            @endif
                         @endforeach
                     </div>
 

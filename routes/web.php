@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\client\CartController;
+use App\Http\Controllers\client\CheckoutController;
 use App\Http\Controllers\client\ProductController as ClientProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -29,6 +30,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/add', [CartController::class, 'store'])->name('cart.add');
     Route::patch('/cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'destroy'])->name('cart.remove');
+
+    // Checkout Routine Routes
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/process', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/confirmation/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 });
 
 
@@ -53,24 +59,6 @@ Route::middleware('guest')->group(function () {
 
 // Authenticated Session Termination Endpoint
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
-
-
-
-/*
-|--------------------------------------------------------------------------
-| Protected Checkout Flow (Requires Authentication)
-|--------------------------------------------------------------------------
-*/
-
-// Checkout Shipping/Billing Form View
-Route::get('/checkout', function () {
-    return view('client.checkout.index');
-})->name('checkout.index');
-
-// Order Confirmation Landing Page View
-Route::get('/order-confirmation/{id}', function ($id) {
-    return view('client.checkout.confirmation');
-})->name('checkout.confirmation');
 
 
 /*

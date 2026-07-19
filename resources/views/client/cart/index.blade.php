@@ -186,7 +186,7 @@
 
                         <div class="mt-10">
                             <!-- Secure Transaction Route Pointer Endpoint -->
-                            <a href="#"
+                            <a href="{{ route('checkout.index') }}"
                                 class="w-full text-center group relative border border-luxury-black text-luxury-black hover:text-luxury-white font-sans text-xs uppercase tracking-[0.4em] font-semibold py-4 px-6 transition-colors duration-500 overflow-hidden block">
                                 <span
                                     class="absolute inset-0 w-full h-full bg-luxury-black transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) -z-10"></span>
